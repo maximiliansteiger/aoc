@@ -2,35 +2,55 @@ const {
     input
 } = require('./readData');
 
-let arr = input.split("\r\n");
-let sum = 0;
-
-arr.forEach(str => {
-
-    let splitArr = str.split("[");
-    let letters = splitArr[0].replaceAll(/\d|\W/g, "")
-    let roomNrArr = splitArr[0].split("-")
-    let roomNr = roomNrArr[roomNrArr.length - 1];
-    let search = splitArr[1].replace("]", "");
-
-    let mostCommon = {};
-    letters.split("").forEach(letter => {
-        mostCommon[letter] = letters.split(letter).length - 1;
-    })
-
-    
-    let most5 = sortObj(mostCommon)
-    console.log(most5);
-
-})
+let cnt = 0;
 
 
-function sortObj(obj) {
-    return Object
-        .entries(obj)
-        .sort((a, b) => {
-            if (b[1] != a[1]) {
-                return b[1] - a[1];
+input.split("\r\n").forEach((item, index) => {
+    let arr = item.split("[");
+    let temp = arr[0].replaceAll("-", "").replaceAll("/1-9/").split("");
+    let letters = temp.filter(item => isNaN(item));
+    let number = +temp.filter((item) => !isNaN(item)).join("");
+
+    if(sortLettersByOccurrence(letters).substring(0, 5) === arr[1].substring(0, 5)) {
+        cnt += number;
+    }
+});
+
+console.log(cnt);
+
+//sort letter array by occurrence else by alphabet
+function sortLettersByOccurrence(letters) {
+    let sortedLetters = letters.sort((a, b) => {
+        let countA = countOccurrenceOfEachLetters(letters)[a];
+        let countB = countOccurrenceOfEachLetters(letters)[b];
+        if (countA > countB) {
+            return -1;
+        } else if (countA < countB) {
+            return 1;
+        } else {
+            if (a > b) {
+                return 1;
+            } else if (a < b) {
+                return -1;
+            } else {
+                return 0;
             }
-        })
+        }
+    });
+    return Array.from(new Set(sortedLetters)).join("");
 }
+
+
+
+function countOccurrenceOfEachLetters(letters) {
+    let obj = {};
+    letters.forEach((item) => {
+        if (obj[item]) {
+            obj[item] += 1;
+        } else {
+            obj[item] = 1;
+        }
+    });
+    return obj;
+}
+
