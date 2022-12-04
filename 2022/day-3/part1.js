@@ -20,7 +20,7 @@ function getValueOfItems(items) {
     let value = 0;
     items.forEach((item) => {
         if (item === item.toUpperCase()) {
-            value += item.charCodeAt(0) - 38; //from 27
+            value += item.charCodeAt(0) - 38;
         } else {
             value += item.charCodeAt(0) - 96;
         }
