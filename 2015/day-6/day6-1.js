@@ -1,38 +1,53 @@
-const { input } = require('./readData.js');
+const {
+    inp
+} = require('./readData.js');
 
-console.log(input);
-let lightsOn = 0;
-let arr = [];
-input.split('\r\n').forEach(e => {
-    let tempArr = e.split(' ');
-    if(tempArr[0] === 'toggle') {
-        arr.push([tempArr[0],tempArr[1].split(',')[0],tempArr[1].split(',')[1],tempArr[3].split(',')[0],tempArr[3].split(',')[1]]);
-    }else{
-        arr.push([tempArr[1],tempArr[2].split(',')[0],tempArr[2].split(',')[1],tempArr[4].split(',')[0],tempArr[4].split(',')[1]]);
+let input = inp.split("\r\n")
+
+function parseCommand(text) {
+    var parsed = text.match(/(.*) (\d+),(\d+) through (\d+),(\d+)/);
+    return {
+        action: parsed[1],
+        start: {
+            x: Math.min(parsed[2], parsed[4]),
+            y: Math.min(parsed[3], parsed[5])
+        },
+        end: {
+            x: Math.max(parsed[2], parsed[4]),
+            y: Math.max(parsed[3], parsed[5])
+        }
     }
 }
-);
-
-// 0,0 999,999
-
-// (999 + 1) - 0
-// (999 + 1) - 0
-// 1000 * 1000 1M lights on
 
 
-// (500 + 1) - 499
-// (500 + 1) - 499
-// 
+function applyCommand(grid, command) {
+    for (var x = command.start.x; x <= command.end.x; x++) {
+        for (var y = command.start.y; y <= command.end.y; y++) {
+            if (grid[x] == undefined) grid[x] = [];
+            if (grid[x][y] == undefined) grid[x][y] = false;
+            switch (command.action) {
+                case "turn on":
+                    grid[x][y] = true;
+                    break;
+                case "turn off":
+                    grid[x][y] = false;
+                    break;
+                case "toggle":
+                    grid[x][y] = !grid[x][y];
+                    break;
+            }
+        }
+    }
+    return grid;
+}
 
+let asdf = input
+    .map(parseCommand)
+    .reduce(applyCommand, [])
+    .reduce(function (count, row) {
+        return count + row.filter(function (l) {
+            return l
+        }).length
+    }, 0);
 
-// if on += lightOn
-// if off -= lightOn
-// if
-
-
-
-
-
-
-
-console.log(arr);
+console.log(asdf);
