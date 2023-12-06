@@ -16,10 +16,10 @@ function count_duplicate(a) {
     }
     for (let prop in counts) {
         if (counts[prop] >= 2) {
-            // console.log(prop + " counted: " + counts[prop] + " times.")
+            console.log(prop + " counted: " + counts[prop] + " times.")
         }
     }
-   return counts;
+    return counts;
 }
 
 let twiceSum = 0;
@@ -40,4 +40,3 @@ arr.forEach(element => {
 
 
 console.log(twiceSum * thriceSum);
-
