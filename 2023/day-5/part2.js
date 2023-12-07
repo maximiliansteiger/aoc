@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 const { input } = require("./readData");
 
 let arr = input.split("\r\n");
@@ -67,3 +68,7 @@ while (leng < seeds.length) {
 
 console.log("min location");
 console.log(minLocation);
+=======
+const { input } = require('./readData');
+
+>>>>>>> fffc6e903a434d8129c2fa8c720184845891e7ac
